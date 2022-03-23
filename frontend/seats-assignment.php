@@ -30,6 +30,30 @@ function tabula_rasa_seats_assignment_shortcode(){
 
 					<img src="<?php echo home_url(); ?>/wp-content/uploads/2021/10/distribution-tables-blank.jpg" class="source-image" />
 
+					<div class="table-distribution-box">
+
+						<div id="table-1" class="table">
+
+							<div class="table-visual">
+								<img src="<?php echo home_url(); ?>/wp-content/plugins/tabula-rasa/images/table-rectangular-10-seat-0.png" />
+							</div>
+
+							<div class="table-visual-ref">1</div>
+
+						</div>
+
+						<div id="table-2" class="table">
+
+							<div class="table-visual">
+								<img src="<?php echo home_url(); ?>/wp-content/plugins/tabula-rasa/images/table-rectangular-10-seat-0.png" />
+							</div>
+
+							<div class="table-visual-ref">2</div>
+
+						</div>
+
+					</div>
+
 				</div>
 
 				<div class="guests-box">
