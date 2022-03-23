@@ -13,3 +13,6 @@
 if(!defined('ABSPATH')){
        exit;
 }
+
+
+include( plugin_dir_path( __FILE__ ) . 'frontend/seats-assignment.php' );
