@@ -1,0 +1,53 @@
+/* Styles for frontend */
+
+/* - Assignment area - */
+
+.assignment-wrapper{
+	position: relative;
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	padding: 10px;
+	font-size: 14px;
+}
+
+.venue-space-box{
+	position: relative;
+	display: block;
+	box-sizing: border-box;
+	width: 80%;
+	min-height: 500px;
+	height: auto;
+	margin-bottom: 30px;
+	margin-right: 30px;
+	padding: 10px;
+	border: 1px solid grey;
+	float: left;
+}
+
+.guests-box{
+	display: block;
+	box-sizing: border-box;
+	width: calc(20% - 30px);
+	min-height: 500px;
+	height: auto;
+	margin-bottom: 30px;
+	padding: 10px;
+	border: 1px solid grey;
+	float: left;
+}
+
+
+
+
+/* Clearfix */
+
+.clearfix{
+  clear: both;
+}
+
+.clearfix:after{
+  clear: both;
+  content: "";
+  display: table;
+}

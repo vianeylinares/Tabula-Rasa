@@ -22,7 +22,25 @@ function tabula_rasa_seats_assignment_shortcode(){
 
 	if ( is_user_logged_in() ) {
 
-		
+		?>
+
+			<div class="assignment-wrapper clearfix">
+
+				<div class="venue-space-box">
+
+					<p>Venue space</p>
+
+				</div>
+
+				<div class="guests-box">
+
+					<p>Guests</p>
+
+				</div>
+
+			</div>
+
+		<?php
 
 	} else {
 
