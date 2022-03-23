@@ -6,6 +6,16 @@ if(!defined('ABSPATH')){
 }
 
 
+function tabula_rasa_frontend_css_and_js() {
+
+	$plugin_url = plugin_dir_url( __FILE__ );
+
+    wp_enqueue_style( 'style', $plugin_url . 'css/style.css' );
+
+}
+add_action( 'wp_enqueue_scripts', 'tabula_rasa_frontend_css_and_js' );
+
+
 function tabula_rasa_seats_assignment_shortcode(){
 
 	ob_start();
