@@ -28,7 +28,7 @@ function tabula_rasa_seats_assignment_shortcode(){
 
 				<div class="venue-space-box">
 
-					<p>Venue space</p>
+					<img src="<?php echo home_url(); ?>/wp-content/uploads/2021/10/distribution-tables-blank.jpg" class="source-image" />
 
 				</div>
 

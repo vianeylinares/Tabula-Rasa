@@ -37,7 +37,11 @@
 	float: left;
 }
 
-
+.source-image{
+	display: block;
+	width: 100%;
+	max-width: none;
+}
 
 
 /* Clearfix */
