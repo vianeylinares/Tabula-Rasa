@@ -12,6 +12,12 @@ function tabula_rasa_frontend_css_and_js() {
 
     wp_enqueue_style( 'style', $plugin_url . 'css/style.css' );
 
+    wp_enqueue_script( 'jquery' );
+
+    /* Magnific Popup */
+    wp_enqueue_style( 'magnific-popup-css', $plugin_url . '/magnific-popup/magnific-popup.css' );
+    wp_enqueue_script( 'magnific-popup-js', $plugin_url . '/magnific-popup/jquery.magnific-popup.js', false );
+
 }
 add_action( 'wp_enqueue_scripts', 'tabula_rasa_frontend_css_and_js' );
 
@@ -40,6 +46,18 @@ function tabula_rasa_seats_assignment_shortcode(){
 
 							<div class="table-visual-ref">1</div>
 
+							<a id="table-popup-1" class="popup-with-zoom-anim" style="display: none !important;" href="#small-dialog-1">View table assigned guests...</a>
+
+							<div id="small-dialog-1" class="zoom-anim-dialog mfp-hide" style="min-height: 300px;">
+
+								<h2>Table #1 Guests:</h2>
+
+								<div class="table-guests-list">
+
+								</div>
+
+							</div>
+
 						</div>
 
 						<div id="table-2" class="table">
@@ -49,6 +67,18 @@ function tabula_rasa_seats_assignment_shortcode(){
 							</div>
 
 							<div class="table-visual-ref">2</div>
+
+							<a id="table-popup-2" class="popup-with-zoom-anim" style="display: none !important;" href="#small-dialog-2">View table assigned guests...</a>
+
+							<div id="small-dialog-2" class="zoom-anim-dialog mfp-hide" style="min-height: 300px;">
+
+								<h2>Table #2 Guests:</h2>
+
+								<div class="table-guests-list">
+
+								</div>
+
+							</div>
 
 						</div>
 
@@ -92,4 +122,57 @@ function tabula_rasa_seats_assignment_shortcode(){
 	return ob_get_clean();
 
 }
-add_shortcode('seats_assignment', 'tabula_rasa_seats_assignment_shortcode');
+add_shortcode( 'seats_assignment', 'tabula_rasa_seats_assignment_shortcode' );
+
+
+function tabula_rasa_seats_assignment_js(){
+
+	global $post;
+
+	if(has_shortcode( $post->post_content, 'seats_assignment' )){
+
+		?>
+
+			<script type="text/javascript">
+
+				jQuery(document).ready(function($){
+
+					home_url = "<?php echo home_url(); ?>";
+
+					jQuery( ".popup-with-zoom-anim" ).magnificPopup({
+
+					    type: 'inline',
+
+					    fixedContentPos: false,
+					    fixedBgPos: true,
+
+					    overflowY: 'auto',
+
+					    closeBtnInside: true,
+					    preloader: false,
+
+					    midClick: true,
+					    removalDelay: 300,
+					    mainClass: 'my-mfp-zoom-in'
+
+					});
+
+					jQuery( ".table" ).click(function(){
+
+						which_table = jQuery(this).attr('id');
+						which_table_num = which_table.substr(which_table.indexOf('-') + 1);
+
+						jQuery("#table-popup-" + which_table_num + ".popup-with-zoom-anim").click();
+
+					});
+
+				});
+
+			</script>
+
+		<?php
+
+	}
+
+}
+add_action( 'wp_footer', 'tabula_rasa_seats_assignment_js', 999 );
