@@ -89,6 +89,45 @@
 }
 
 
+/* - Guests - */
+
+.guests-group{
+	position: relative;
+	margin-bottom: 20px;
+	background-color: rgb(255 255 255 / 27%);
+	overflow: hidden;
+	padding: 15px 5px 5px 5px;
+}
+
+.separate{
+	position: absolute;
+	top: 0;
+	right: 5px;
+	cursor: pointer;
+	font-size: 12px;
+}
+
+.guests-group input[type=checkbox]{
+	-webkit-appearance: auto;
+	-moz-appearance: auto;
+	width: inherit;
+    height: inherit;
+    display: none;
+}
+
+.guests-group input[type=checkbox]:after{
+	display: none;
+}
+
+.guests-group .separate.disable:before{
+	content: "+ ";
+}
+
+.guests-group .separate.active:before{
+	content: "- ";
+}
+
+
 /* - Magnific Popup general styles for tables - */
 
 .zoom-anim-dialog {

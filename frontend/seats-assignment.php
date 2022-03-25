@@ -90,6 +90,30 @@ function tabula_rasa_seats_assignment_shortcode(){
 
 					<p>Guests</p>
 
+					<div id="draggable-1" class="guests-group">
+						<input type="checkbox" checked /> <b>Name 1</b><br/>
+						<input type="checkbox" checked /> Name 2<br/>
+						<input type="checkbox" checked /> Name 3<br/>
+						<input type="checkbox" checked /> Name 4
+						<div class="separate disable">Separar</div>
+					</div>
+
+					<div id="draggable-2" class="guests-group">
+						<input type="checkbox" checked /> <b>Name 1</b><br/>
+						<input type="checkbox" checked /> Name 2<br/>
+						<input type="checkbox" checked /> Name 3
+						<div class="separate disable">Separar</div>
+					</div>
+
+					<div id="draggable-3" class="guests-group">
+						<input type="checkbox" checked /> <b>Name 1</b><br/>
+						<input type="checkbox" checked /> Name 2<br/>
+						<input type="checkbox" checked /> Name 3<br/>
+						<input type="checkbox" checked /> Name 4<br/>
+						<input type="checkbox" checked /> Name 5
+						<div class="separate disable">Separar</div>
+					</div>
+
 				</div>
 
 			</div>
@@ -163,6 +187,46 @@ function tabula_rasa_seats_assignment_js(){
 						which_table_num = which_table.substr(which_table.indexOf('-') + 1);
 
 						jQuery("#table-popup-" + which_table_num + ".popup-with-zoom-anim").click();
+
+					});
+
+					jQuery( ".separate" ).click(function(){
+
+						which_separator = jQuery(this).parent().attr('id');
+						which_separator_num = which_separator.substr(which_separator.indexOf('-') + 1);
+
+						if( jQuery(this).hasClass('disable') ){
+
+							/* Disable other active separators and checkboxes */
+							jQuery( ".separate" ).removeClass("active");
+							jQuery( ".separate" ).addClass("disable");
+							jQuery( ".guests-group input" ).css({
+								"display": "none",
+							});
+
+							jQuery(this).removeClass("disable");
+							jQuery(this).addClass("active");
+
+							jQuery( "#" + which_separator + " input" ).css({
+								"display": "inline-block",
+							});
+
+							return false;
+
+						}
+
+						if( jQuery(this).hasClass('active') ){
+
+							jQuery(this).removeClass("active");
+							jQuery(this).addClass("disable");
+
+							jQuery( "#" + which_separator + " input" ).css({
+								"display": "none",
+							});
+
+							return false;
+
+						}
 
 					});
 
