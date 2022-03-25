@@ -14,6 +14,10 @@ function tabula_rasa_frontend_css_and_js() {
 
     wp_enqueue_script( 'jquery' );
 
+    /* jQuery Draggable and Droppable */
+    wp_enqueue_script( 'jquery-ui-draggable' );
+    wp_enqueue_script( 'jquery-ui-droppable' );
+
     /* Magnific Popup */
     wp_enqueue_style( 'magnific-popup-css', $plugin_url . '/magnific-popup/magnific-popup.css' );
     wp_enqueue_script( 'magnific-popup-js', $plugin_url . '/magnific-popup/jquery.magnific-popup.js', false );
@@ -38,7 +42,7 @@ function tabula_rasa_seats_assignment_shortcode(){
 
 					<div class="table-distribution-box">
 
-						<div id="table-1" class="table">
+						<div id="table-1" class="table droppable">
 
 							<div class="table-visual">
 								<img src="<?php echo home_url(); ?>/wp-content/plugins/tabula-rasa/images/table-rectangular-10-seat-0.png" />
@@ -60,7 +64,7 @@ function tabula_rasa_seats_assignment_shortcode(){
 
 						</div>
 
-						<div id="table-2" class="table">
+						<div id="table-2" class="table droppable">
 
 							<div class="table-visual">
 								<img src="<?php echo home_url(); ?>/wp-content/plugins/tabula-rasa/images/table-rectangular-10-seat-0.png" />
@@ -90,7 +94,7 @@ function tabula_rasa_seats_assignment_shortcode(){
 
 					<p>Guests</p>
 
-					<div id="draggable-1" class="guests-group">
+					<div id="draggable-1" class="guests-group draggable">
 						<input type="checkbox" checked /> <b>Name 1</b><br/>
 						<input type="checkbox" checked /> Name 2<br/>
 						<input type="checkbox" checked /> Name 3<br/>
@@ -98,14 +102,14 @@ function tabula_rasa_seats_assignment_shortcode(){
 						<div class="separate disable">Separar</div>
 					</div>
 
-					<div id="draggable-2" class="guests-group">
+					<div id="draggable-2" class="guests-group draggable">
 						<input type="checkbox" checked /> <b>Name 1</b><br/>
 						<input type="checkbox" checked /> Name 2<br/>
 						<input type="checkbox" checked /> Name 3
 						<div class="separate disable">Separar</div>
 					</div>
 
-					<div id="draggable-3" class="guests-group">
+					<div id="draggable-3" class="guests-group draggable">
 						<input type="checkbox" checked /> <b>Name 1</b><br/>
 						<input type="checkbox" checked /> Name 2<br/>
 						<input type="checkbox" checked /> Name 3<br/>
@@ -211,6 +215,9 @@ function tabula_rasa_seats_assignment_js(){
 								"display": "inline-block",
 							});
 
+							jQuery(this).parent().draggable( "disable" );
+							jQuery(this).parent().css({"cursor":"auto"});
+
 							return false;
 
 						}
@@ -224,11 +231,30 @@ function tabula_rasa_seats_assignment_js(){
 								"display": "none",
 							});
 
+							jQuery(this).parent().draggable( "enable" );
+							jQuery(this).parent().css({"cursor":"move"});
+
 							return false;
 
 						}
 
 					});
+
+					jQuery( ".draggable" ).draggable({
+						revert: "invalid",
+						drag: function(event, ui){
+							which_guest_group = jQuery(this).attr('id');
+						}
+			        });
+
+			        jQuery( ".droppable" ).droppable({
+						drop: function( event, ui ) {
+							jQuery("#" + which_guest_group).css({
+								"display": "none",
+							});
+						}
+			        });
+
 
 				});
 

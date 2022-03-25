@@ -35,6 +35,7 @@
 	padding: 10px;
 	border: 1px solid grey;
 	float: left;
+	cursor: move;
 }
 
 .source-image{
@@ -97,6 +98,8 @@
 	background-color: rgb(255 255 255 / 27%);
 	overflow: hidden;
 	padding: 15px 5px 5px 5px;
+	width: auto;
+	height: auto;
 }
 
 .separate{
