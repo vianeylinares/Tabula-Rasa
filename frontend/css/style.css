@@ -255,6 +255,30 @@ button.mfp-close{
 /* End - Magnific Popup general styles for tables - */
 
 
+/* - Seat assignment login form - */
+
+#seat-loginform{
+	display: block;
+	width: 100%;
+	max-width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#seat-loginform p{
+	margin-bottom: 10px;
+}
+
+#seat-loginform input[type=text],
+#seat-loginform input[type=password],
+#seat-loginform input[type=submit]{
+	width: 100%;
+}
+
+#seat-loginform p.login-remember{
+	margin-bottom: 20px;
+}
+
 
 /* Clearfix */
 
