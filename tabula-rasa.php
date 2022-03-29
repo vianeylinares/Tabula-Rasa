@@ -15,4 +15,5 @@ if(!defined('ABSPATH')){
 }
 
 
+include( plugin_dir_path( __FILE__ ) . 'admin/admin-setup.php' );
 include( plugin_dir_path( __FILE__ ) . 'frontend/seats-assignment.php' );
