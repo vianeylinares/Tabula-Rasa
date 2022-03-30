@@ -1,0 +1,43 @@
+/* Styles for admin functions and resources */
+
+/* Tables */
+
+.table-types-space{
+	position: relative;
+	width: 80%;
+	margin: 40px auto;
+}
+
+.table-box{
+	width: calc(20% - 20px);
+	box-sizing: border-box;	
+	margin-left: 10px;
+	margin-right: 10px;
+	padding: 10px;
+	border: 1px solid grey;
+	float: left;
+	text-align: center;
+	cursor: pointer;
+	border-radius: 5px;
+}
+
+.table-box:hover{
+	background-color: #ffffff;
+}
+
+.table-box img{
+	max-width: 100%;
+	width: 100px;
+}
+
+/* Clearfix */
+
+.clearfix{
+  clear: both;
+}
+
+.clearfix:after{
+  clear: both;
+  content: "";
+  display: table;
+}
