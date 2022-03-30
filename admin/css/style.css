@@ -30,6 +30,27 @@
 	width: 100px;
 }
 
+
+
+/* Venue */
+
+.venue-spaces{
+	width: 80%;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.venue{
+	position: relative;
+	width: 100%;
+}
+
+.venue img{
+	width: 100%;
+}
+
+
+
 /* Clearfix */
 
 .clearfix{

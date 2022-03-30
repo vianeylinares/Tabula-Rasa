@@ -60,6 +60,22 @@ function tabularasa_render_plugin_settings_page() {
 
 	</div>
 
+	<div class="venue-space-box">
+
+		<h2>Registered tables: <span>#</span></h2>
+
+		<div class="venue-spaces">
+
+			<div class="venue">
+
+				<img src="<?php echo home_url(); ?>/wp-content/uploads/2021/09/distribution-tables-blank.jpg">
+
+			</div>
+
+		</div>
+
+	</div>
+
 	<?php
 
 }
