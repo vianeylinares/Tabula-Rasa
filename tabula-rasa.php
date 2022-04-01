@@ -15,5 +15,7 @@ if(!defined('ABSPATH')){
 }
 
 include( plugin_dir_path( __FILE__ ) . 'admin/post-types/post-types.php' );
+include( plugin_dir_path( __FILE__ ) . 'admin/post-types/post-types-metaboxes.php' );
+include( plugin_dir_path( __FILE__ ) . 'admin/background-functions.php' );
 include( plugin_dir_path( __FILE__ ) . 'admin/admin-setup.php' );
 include( plugin_dir_path( __FILE__ ) . 'frontend/seats-assignment.php' );

@@ -30,6 +30,45 @@
 	width: 100px;
 }
 
+.table-distribution-box{
+	position: absolute;	
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+}
+
+.table{
+	position: absolute;
+	width: 50px;
+	height: 100px;
+	margin: 20px;
+	cursor: pointer;
+}
+
+.table-visual{
+	position: relative;
+}
+
+.table-visual img{
+	position: absolute;
+	width: 100%;
+	height: auto;
+	top: 0;
+	left: 0;
+}
+
+.table-visual-ref{	
+    position: absolute;
+    top: 15px;
+    right: 0;
+    left: 0;
+    text-align: center;
+    color: #ffffff;
+    font-weight: 500;
+    z-index: 0;
+}
+
 
 
 /* Venue */
