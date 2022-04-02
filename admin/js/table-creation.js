@@ -21,7 +21,17 @@ jQuery(document).ready(function($){
 
 				data = $.parseJSON(data);
 
+				new_table_display = "<div id='table-" + data.table_id + "' class='table draggable' style='top: 0; left: 0;'>";
+				new_table_display += "<div class='table-visual'>";
+				new_table_display += "<img src='" + home_url +"/wp-content/plugins/tabula-rasa/images/table-" + data.table_shape + "-" + data.table_seats + "-seat-0.png' />";
+				new_table_display += "</div>";
+				new_table_display += "<div class='table-visual-ref'>" + data.total_tables + "</div>";
+				new_table_display += "</div>";
+
 				jQuery(".venue-space-box h2 span").text(data.total_tables);
+				jQuery(".table-distribution-box").append(new_table_display);
+
+				set_draggable();
 
 			}
 

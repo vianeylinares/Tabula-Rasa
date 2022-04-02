@@ -22,9 +22,16 @@ function tabularasa_admin_css_and_js(){
 
     wp_enqueue_script( 'jquery' );
 
+    /* jQuery Draggable and Droppable */
+    wp_enqueue_script( 'jquery-ui-draggable' );
+
     /* Table creation JS */
     wp_register_script( 'table-creation-js', plugin_dir_url( __FILE__ ) . '../admin/js/table-creation.js', array('jquery'), '1', true );
     wp_enqueue_script( 'table-creation-js' );
+
+    /* Table setup JS */
+    wp_register_script( 'table-setup-js', plugin_dir_url( __FILE__ ) . '../admin/js/table-setup.js', array('jquery'), '1', true );
+    wp_enqueue_script( 'table-setup-js' );
 
 }
 add_action( 'admin_enqueue_scripts', 'tabularasa_admin_css_and_js' );
@@ -89,25 +96,39 @@ function tabularasa_render_plugin_settings_page() {
 
 				<div class="table-distribution-box">
 
-					<div id="table-1" class="table">
+					<?php
 
-						<div class="table-visual">
-							<img src="<?php echo home_url(); ?>/wp-content/plugins/tabula-rasa/images/table-rectangular-10-seat-0.png" />
-						</div>
+						$args_table = array(
+								'post_type' => 'table',
+								'order' => 'DESC',
+								'posts_per_page' => '-1'
+							);
 
-						<div class="table-visual-ref">1</div>
+						$query_table = new WP_Query($args_table);
 
-					</div>
+						if ( $query_table->have_posts() ) :
 
-					<div id="table-2" class="table">
+							while($query_table -> have_posts()) : $query_table -> the_post();
 
-						<div class="table-visual">
-							<img src="<?php echo home_url(); ?>/wp-content/plugins/tabula-rasa/images/table-rectangular-10-seat-0.png" />
-						</div>
+								?>
 
-						<div class="table-visual-ref">2</div>
+									<div id="table-<?php echo get_the_ID(); ?>" class="table draggable" style="top: <?php echo get_post_meta(get_the_ID(), 'top', true) . '%' ?>; left: <?php echo get_post_meta(get_the_ID(), 'left', true) . '%' ?>;">
 
-					</div>
+										<div class="table-visual">
+											<img src="<?php echo home_url(); ?>/wp-content/plugins/tabula-rasa/images/table-<?php echo get_post_meta(get_the_ID(), 'shape', true ); ?>-<?php echo get_post_meta(get_the_ID(), 'max_seats', true ); ?>-seat-0.png" />
+										</div>
+
+										<div class="table-visual-ref"><?php echo get_post_meta(get_the_ID(), 'table_num', true); ?></div>
+
+									</div>
+
+								<?php
+
+							endwhile;
+
+						endif;
+
+					?>
 
 				</div>
 
