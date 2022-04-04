@@ -134,7 +134,7 @@ function venue_register_post_type(){
                     //'editor',
                     //'author',
                     'custom_fields',
-                    //'thumbnail'
+                    'thumbnail'
             ),
             //'taxonomies'          => array( 'venues-category' ),
 
