@@ -117,29 +117,177 @@ function tabula_rasa_seats_assignment_shortcode(){
 
 					<p>Guests</p>
 
-					<div id="draggable-1" class="guests-group draggable">
-						<input type="checkbox" checked /> <b>Name 1</b><br/>
-						<input type="checkbox" checked /> Name 2<br/>
-						<input type="checkbox" checked /> Name 3<br/>
-						<input type="checkbox" checked /> Name 4
-						<div class="separate disable">Separar</div>
-					</div>
+					<?php
 
-					<div id="draggable-2" class="guests-group draggable">
-						<input type="checkbox" checked /> <b>Name 1</b><br/>
-						<input type="checkbox" checked /> Name 2<br/>
-						<input type="checkbox" checked /> Name 3
-						<div class="separate disable">Separar</div>
-					</div>
+						$form_id = 2;
+						$submissions = Ninja_Forms()->form( $form_id )->get_subs();
 
-					<div id="draggable-3" class="guests-group draggable">
-						<input type="checkbox" checked /> <b>Name 1</b><br/>
-						<input type="checkbox" checked /> Name 2<br/>
-						<input type="checkbox" checked /> Name 3<br/>
-						<input type="checkbox" checked /> Name 4<br/>
-						<input type="checkbox" checked /> Name 5
-						<div class="separate disable">Separar</div>
-					</div>
+						/*echo "<pre>";
+							print_r( $submissions );
+						echo "</pre>";*/
+
+						foreach ($submissions as $key => $submission) {
+						
+							$all_fields = $submission->get_field_values(); //echo $key . "<br/>";
+
+							//print_r($all_fields['_sec_num']);
+
+
+							$args2 = array(
+								'post_type' => 'guest',
+								'order' => 'ASC',
+								'posts_per_page' => '-1',
+								'meta_key' => 'main_guest_submission',
+		    					'meta_value' => $key,
+							);
+
+							$query2 = new WP_Query($args2);
+
+							//$findings = $query2->found_posts;
+
+							//echo $findings;
+
+							if ( !$query2->have_posts() ) :
+				
+								//while($query2 -> have_posts()) : $query2 -> the_post();
+									
+								    // insert the new guest
+									$main_guest_id = wp_insert_post(array (
+									    'post_type' => 'guest',
+									    'post_title' => $all_fields['name_field'],
+									    'post_status' => 'publish',
+									));
+
+									update_post_meta($main_guest_id, 'main_guest_submission', $key);
+									update_post_meta($main_guest_id, 'assigned_table', 0);
+									update_post_meta($main_guest_id, 'status', 1);
+									update_post_meta($main_guest_id, 'separated_from_group_of_guests', 0);
+
+
+								    if($all_fields['companions_field'] != ""){
+									    						   
+										$companions = explode(' ', $all_fields['companions_field']);
+
+										foreach ($companions as $key => $companion) {
+											
+											// insert the main guest companion
+											$companion_id = wp_insert_post(array (
+											    'post_type' => 'guest',
+											    'post_title' => $companion,
+											    'post_status' => 'publish',
+											    'comment_status' => 'closed',   // if you prefer
+											    'ping_status' => 'closed',      // if you prefer
+											));
+
+											if ($companion_id) {
+
+											    // add companion bond to main guest
+											    update_post_meta($companion_id, 'with_main_guest', $main_guest_id);
+											    update_post_meta($companion_id, 'main_guest_submission', $all_fields['_sec_num']);
+											    update_post_meta($companion_id, 'assigned_table', 0);
+											    update_post_meta($companion_id, 'status', 0);
+											    update_post_meta($companion_id, 'separated_from_group_of_guests', 0);
+											    
+											}
+
+										}						
+										
+									}
+
+								//endwhile;				
+
+							endif; wp_reset_postdata();
+
+						}
+
+						$args = array(
+							'post_type' => 'guest',
+							'order' => 'ASC',
+							'posts_per_page' => -1,
+							//'meta_key' => 'with_main_guest',
+					    	//'meta_value' =>  0,
+						);
+
+						$query = new WP_Query($args);
+
+						$count_draggs = 1;
+
+						//$draggers = "";
+
+						if ( $query->have_posts() ) :
+						
+							while($query -> have_posts()) : $query -> the_post();
+
+								//$with_main_guest = get_post_custom(get_the_ID());
+
+								$count_guest = 1;	
+
+								/* $with_main_guest['with_main_guest'][0] not set means this is "main guest" */
+
+								//if( !isset( $with_main_guest['with_main_guest'][0] ) ){
+								if( get_post_meta(get_the_ID(), 'status', true) == 1 && get_post_meta(get_the_ID(), 'assigned_table', true) == 0 ){
+
+									?>
+
+										<div id="draggable-<?php echo $count_draggs; ?>" class="guests-group draggable">
+
+											<input type="checkbox" value="<?php echo get_the_ID(); ?>" checked /> <b><?php echo get_the_title(); ?></b><br/>
+
+											<?php 
+
+												$main_guest = get_the_ID();								
+
+												$args2 = array(
+													'post_type' => 'guest',
+													'order' => 'ASC',
+													'posts_per_page' => '-1',
+													'meta_key' => 'with_main_guest',
+							    					'meta_value' =>  $main_guest,
+												);
+
+												$query2 = new WP_Query($args2);
+
+												if ( $query2->have_posts() ) :
+									
+													while($query2 -> have_posts()) : $query2 -> the_post();
+
+														?>
+
+															<input type="checkbox" value="<?php echo get_the_ID(); ?>" checked /> <?php echo get_the_title() ?><br/>
+
+														<?php
+
+														$count_guest++;
+
+													endwhile;				
+
+												endif; wp_reset_postdata();
+
+											?>
+
+											<div class="separate disable">Separar</div>
+
+										</div>
+
+									<?php						
+
+									//$draggers.= ".draggable-" . $count_draggs;
+
+									$count_draggs++;
+
+									//echo "<br/>";
+
+								}
+
+							endwhile;
+
+						else:
+
+						    echo 'no posts found';
+
+						endif; wp_reset_postdata();
+
+					?>
 
 				</div>
 
