@@ -33,3 +33,29 @@ function tabula_rasa_table_callback($post){
     echo "Shape: " . get_post_meta($table_id, 'shape', true);
         
 }
+
+
+function tabula_rasa_guest_metabox(){
+
+    add_meta_box(
+
+        'tabula_rasa_guest_metabox',
+        'Guest details',
+        'tabula_rasa_guest_callback',
+        'guest'
+
+    );
+
+}
+add_action('add_meta_boxes', 'tabula_rasa_guest_metabox');
+
+
+function tabula_rasa_guest_callback($post){
+
+    $guest_id = ( isset($_GET['post']) )? $_GET['post'] : 0 ;
+
+    echo "Status: " . get_post_meta($guest_id, 'status', true); echo "<br/>";
+    echo "Assigned table: " . get_post_meta($guest_id, 'assigned_table', true); echo "<br/>";
+    echo "Separated from group of guests: " . get_post_meta($guest_id, 'separated_from_group_of_guests', true);
+        
+}
