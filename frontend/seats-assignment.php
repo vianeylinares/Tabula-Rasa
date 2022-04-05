@@ -38,7 +38,28 @@ function tabula_rasa_seats_assignment_shortcode(){
 
 				<div class="venue-space-box">
 
-					<img src="<?php echo home_url(); ?>/wp-content/uploads/2021/10/distribution-tables-blank.jpg" class="source-image" />
+					<?php
+
+						$args_venue = array(
+								'post_type' => 'venue',
+								'posts_per_page' => '1'
+							);
+
+						$query_venue = new WP_Query($args_venue);
+
+						if ( $query_venue->have_posts() ) :
+
+							while($query_venue -> have_posts()) : $query_venue -> the_post();
+
+								$image_url = get_the_post_thumbnail_url(get_the_ID(),'full');
+
+							endwhile; wp_reset_postdata();
+
+						endif;
+
+					?>
+
+					<img src="<?php echo $image_url; ?>" class="source-image" />
 
 					<div class="table-distribution-box">
 
