@@ -42,49 +42,51 @@ function tabula_rasa_seats_assignment_shortcode(){
 
 					<div class="table-distribution-box">
 
-						<div id="table-1" class="table droppable">
+						<?php
 
-							<div class="table-visual">
-								<img src="<?php echo home_url(); ?>/wp-content/plugins/tabula-rasa/images/table-rectangular-10-seat-0.png" />
-							</div>
+							$args_table = array(
+									'post_type' => 'table',
+									'order' => 'DESC',
+									'posts_per_page' => '-1'
+								);
 
-							<div class="table-visual-ref">1</div>
+							$query_table = new WP_Query($args_table);
 
-							<a id="table-popup-1" class="popup-with-zoom-anim" style="display: none !important;" href="#small-dialog-1">View table assigned guests...</a>
+							if ( $query_table->have_posts() ) :
 
-							<div id="small-dialog-1" class="zoom-anim-dialog mfp-hide" style="min-height: 300px;">
+								while($query_table -> have_posts()) : $query_table -> the_post();
 
-								<h2>Table #1 Guests:</h2>
+									?>
 
-								<div class="table-guests-list">
+										<div id="table-<?php echo get_the_ID(); ?>" class="table droppable" style="top: <?php echo get_post_meta(get_the_ID(), 'top', true) . '%' ?>; left: <?php echo get_post_meta(get_the_ID(), 'left', true) . '%' ?>;">
 
-								</div>
+											<div class="table-visual">
+												<img src="<?php echo home_url(); ?>/wp-content/plugins/tabula-rasa/images/table-<?php echo get_post_meta(get_the_ID(), 'shape', true ); ?>-<?php echo get_post_meta(get_the_ID(), 'max_seats', true ); ?>-seat-0.png" />
+											</div>
 
-							</div>
+											<div class="table-visual-ref"><?php echo get_post_meta(get_the_ID(), 'table_num', true); ?></div>
 
-						</div>
+											<a id="table-popup-<?php echo get_the_ID(); ?>" class="popup-with-zoom-anim" style="display: none !important;" href="#small-dialog-<?php echo get_the_ID(); ?>">View table assigned guests...</a>
 
-						<div id="table-2" class="table droppable">
+											<div id="small-dialog-<?php echo get_the_ID(); ?>" class="zoom-anim-dialog mfp-hide" style="min-height: 300px;">
 
-							<div class="table-visual">
-								<img src="<?php echo home_url(); ?>/wp-content/plugins/tabula-rasa/images/table-rectangular-10-seat-0.png" />
-							</div>
+												<h2>Table #<?php echo get_post_meta(get_the_ID(), 'table_num', true); ?> Guests:</h2>
 
-							<div class="table-visual-ref">2</div>
+												<div class="table-guests-list">
 
-							<a id="table-popup-2" class="popup-with-zoom-anim" style="display: none !important;" href="#small-dialog-2">View table assigned guests...</a>
+												</div>
 
-							<div id="small-dialog-2" class="zoom-anim-dialog mfp-hide" style="min-height: 300px;">
+											</div>
 
-								<h2>Table #2 Guests:</h2>
+										</div>
 
-								<div class="table-guests-list">
+									<?php
 
-								</div>
+								endwhile; wp_reset_postdata();
 
-							</div>
+							endif;
 
-						</div>
+						?>
 
 					</div>
 
