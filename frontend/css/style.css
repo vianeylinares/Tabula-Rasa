@@ -71,7 +71,7 @@
 
 .table-visual img{
 	position: absolute;
-	/*display: none;*/
+	display: none;
 	width: 100%;
 	height: auto;
 	top: 0;

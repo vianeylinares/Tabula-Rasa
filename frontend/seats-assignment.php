@@ -82,7 +82,29 @@ function tabula_rasa_seats_assignment_shortcode(){
 										<div id="table-<?php echo get_the_ID(); ?>" class="table droppable" style="top: <?php echo get_post_meta(get_the_ID(), 'top', true) . '%' ?>; left: <?php echo get_post_meta(get_the_ID(), 'left', true) . '%' ?>;">
 
 											<div class="table-visual">
-												<img src="<?php echo home_url(); ?>/wp-content/plugins/tabula-rasa/images/table-<?php echo get_post_meta(get_the_ID(), 'shape', true ); ?>-<?php echo get_post_meta(get_the_ID(), 'max_seats', true ); ?>-seat-0.png" />
+
+												<?php
+
+													$table_total_seats = (int)get_post_meta(get_the_ID(), 'max_seats', true);
+
+													for( $i = 0; $i <= $table_total_seats; $i++ ) {
+
+														?>
+
+															<img src="<?php echo home_url(); ?>/wp-content/plugins/tabula-rasa/images/table-<?php echo get_post_meta(get_the_ID(), 'shape', true ); ?>-<?php echo get_post_meta(get_the_ID(), 'max_seats', true ); ?>-seat-<?php echo $i; ?>.png" />
+
+														<?php
+
+													}
+
+												?>
+
+											</div>
+
+											<div class="table-data">
+												<div class="table-id" table-id="<?php echo get_the_ID(); ?>"></div>
+												<div class="seats-taken" seats_taken="<?php echo get_post_meta(get_the_ID(), 'seats_taken', true); ?>"></div>
+												<style>#table-<?php echo get_the_ID(); ?> .table-visual img:nth-child(<?php echo $seats_taken + 1; ?>){ display: block; }</style>
 											</div>
 
 											<div class="table-visual-ref"><?php echo get_post_meta(get_the_ID(), 'table_num', true); ?></div>
