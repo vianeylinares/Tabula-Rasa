@@ -134,9 +134,17 @@ function tabula_rasa_seats_assignment_shortcode(){
 
 															while($query -> have_posts()) : $query -> the_post();
 
-																$with_main_guest = get_post_custom(get_the_ID());
+																//$with_main_guest = get_post_custom(get_the_ID());
 
-																echo (!isset( $with_main_guest['with_main_guest'][0] ))? "<div class='guester guest-id_" . get_the_ID() . "'><input type='checkbox' value='" . get_the_ID() ."' checked disabled /> " : "<div class='guester guest-id_" . get_the_ID() . "'>&nbsp;&nbsp;&nbsp;<input type='checkbox' value='" . get_the_ID() ."' checked /> "; echo get_the_title(); echo '</div>';
+																//echo (!isset( $with_main_guest['with_main_guest'][0] ))? "<div class='guester guest-id_" . get_the_ID() . "'><input type='checkbox' value='" . get_the_ID() ."' checked disabled /> " : "<div class='guester guest-id_" . get_the_ID() . "'>&nbsp;&nbsp;&nbsp;<input type='checkbox' value='" . get_the_ID() ."' checked /> "; echo get_the_title(); echo '</div>';
+
+																?>
+
+																	<div class='guester guest-id_<?php echo get_the_ID(); ?>'>
+																		<input type='checkbox' value='<?php echo get_the_ID(); ?>' checked /> <?php echo get_the_title(); ?>
+																	</div>
+
+																<?php
 
 															endwhile;
 
@@ -278,7 +286,7 @@ function tabula_rasa_seats_assignment_shortcode(){
 								/* $with_main_guest['with_main_guest'][0] not set means this is "main guest" */
 
 								//if( !isset( $with_main_guest['with_main_guest'][0] ) ){
-								if( get_post_meta(get_the_ID(), 'status', true) == 1 && get_post_meta(get_the_ID(), 'assigned_table', true) == 0 ){
+								if( get_post_meta(get_the_ID(), 'status', true) == 1 && get_post_meta(get_the_ID(), 'assigned_table', true) == 0 && get_post_meta(get_the_ID(), 'separated_from_group_of_guests', true) == 0){
 
 									?>
 
@@ -306,15 +314,19 @@ function tabula_rasa_seats_assignment_shortcode(){
 									
 													while($query2 -> have_posts()) : $query2 -> the_post();
 
-														?>
+														if( get_post_meta(get_the_ID(), 'assigned_table', true) == 0 && get_post_meta(get_the_ID(), 'separated_from_group_of_guests', true) == 0){
 
-															<input type="checkbox" value="<?php echo get_the_ID(); ?>" checked /> <?php echo get_the_title() ?><br/>
+															?>
 
-														<?php
+																<input type="checkbox" value="<?php echo get_the_ID(); ?>" checked /> <?php echo get_the_title() ?><br/>
 
-														$user_group_array.= "," . strval(get_the_ID());
+															<?php
 
-														$count_guest++;
+															$count_guest++;
+
+														}
+
+														$user_group_array.= "," . strval(get_the_ID());											
 
 													endwhile;				
 
@@ -326,7 +338,62 @@ function tabula_rasa_seats_assignment_shortcode(){
 
 											<div group_array="<?php echo $user_group_array; ?>" class="group-array"></div>
 
-											<div class="separate disable">Separar</div>
+											<?php if( $count_guest > 1 ){ ?>
+
+												<div class="separate disable">Separar</div>
+
+											<?php } ?>
+
+										</div>
+
+									<?php						
+
+									//$draggers.= ".draggable-" . $count_draggs;
+
+									$count_draggs++;
+
+									//echo "<br/>";
+
+								}
+
+							endwhile;
+
+						else:
+
+						    echo 'no posts found';
+
+						endif; wp_reset_postdata();
+
+						if ( $query->have_posts() ) :
+						
+							while($query -> have_posts()) : $query -> the_post();
+
+								//$with_main_guest = get_post_custom(get_the_ID());
+
+								$count_guest = 1;	
+
+								/* $with_main_guest['with_main_guest'][0] not set means this is "main guest" */
+
+								//if( !isset( $with_main_guest['with_main_guest'][0] ) ){
+								if( get_post_meta( get_the_ID(), 'separated_from_group_of_guests', true) == 1 && get_post_meta( get_the_ID(), 'assigned_table', true) == 0 ){
+
+									?>
+
+										<div id="draggable-<?php echo $count_draggs; ?>" class="guests-group draggable">
+
+											<input type="checkbox" value="<?php echo get_the_ID(); ?>" checked /> 
+
+											<?php
+
+												echo ( get_post_meta(get_the_ID(), 'status', true) == 1 )? "<b>" : "" ;
+												echo get_the_title();
+												echo ( get_post_meta(get_the_ID(), 'status', true) == 1 )? "</b>" : "" ;
+
+											?>
+
+											<div num_guests="<?php echo $count_guest; ?>" class='num-guests'></div>
+
+											<div group_array="<?php echo get_the_ID(); ?>" class="group-array"></div>
 
 										</div>
 
@@ -398,6 +465,8 @@ function tabula_rasa_seats_assignment_js(){
 				jQuery(document).ready(function($){
 
 					home_url = "<?php echo home_url(); ?>";
+
+					set_draggable();
 
 					jQuery( ".popup-with-zoom-anim" ).magnificPopup({
 
@@ -472,13 +541,6 @@ function tabula_rasa_seats_assignment_js(){
 
 					});
 
-					jQuery( ".draggable" ).draggable({
-						revert: "invalid",
-						drag: function(event, ui){
-							which_guest_group = jQuery(this).attr('id');
-						}
-			        });
-
 			        jQuery( ".droppable" ).droppable({
 						drop: function( event, ui ) {
 							jQuery("#" + which_guest_group).css({
@@ -532,12 +594,14 @@ function tabula_rasa_seats_assignment_js(){
 
 										for( i=1; i<=datas.new_guests; i++ ){
 
-											if(i!=1){
-												new_seats_display+= "<div class='guester guest-id_" +  datas['guest_'+i+'_ID'] + "'>&nbsp;&nbsp;&nbsp;<input type='checkbox' value='" +  datas['guest_'+i+'_ID'] + "' checked /> ";
-											}else{
-												new_seats_display+= "<div class='guester guest-id_" +  datas['guest_'+i+'_ID'] + "'><input type='checkbox' value='" +  datas['guest_'+i+'_ID'] + "' checked disabled /> ";
-											}
+											//if(i!=1){
+												//new_seats_display+= "<div class='guester guest-id_" +  datas['guest_'+i+'_ID'] + "'>&nbsp;&nbsp;&nbsp;<input type='checkbox' value='" +  datas['guest_'+i+'_ID'] + "' checked /> ";
+											//}else{
+												//new_seats_display+= "<div class='guester guest-id_" +  datas['guest_'+i+'_ID'] + "'><input type='checkbox' value='" +  datas['guest_'+i+'_ID'] + "' checked disabled /> ";
+											//}
 
+											new_seats_display+= "<div class='guester guest-id_" +  datas['guest_'+i+'_ID'] + "'>";
+											new_seats_display+= "<input type='checkbox' value='" +  datas['guest_'+i+'_ID'] + "' checked/> ";
 											new_seats_display+= datas["guest_"+i];
 											new_seats_display+= "</div>";
 
@@ -545,7 +609,9 @@ function tabula_rasa_seats_assignment_js(){
 
 										jQuery("#small-dialog-"+ which_table_num + " .table-guests-list").append(new_seats_display);
 
-										//location.reload();
+										jQuery("body").prepend("<div class='mfp-bg my-mfp-zoom-in mfp-ready'></div>");
+
+										location.reload();
 
 									}
 
@@ -575,7 +641,82 @@ function tabula_rasa_seats_assignment_js(){
 
 			        });
 
+
+			        jQuery(".guester input[type=checkbox]").click(function(){
+
+						//alert("Here");
+
+						which_guest_id = jQuery(this).val();
+
+						console.log(which_guest_id);
+
+						which_table = jQuery(".guest-id_" + which_guest_id).parent().parent().attr('id');
+
+						which_table_num = which_table.substr(which_table.indexOf('-') + 8);
+
+						jQuery(".guest-id_" + jQuery(this).val()).remove();
+
+						console.log(which_guest_id);
+
+						jQuery.post(
+
+							home_url + '/wp-admin/admin-ajax.php', {	
+								
+								action: 'removeGuestFromTable',
+								
+									data: { guest_id: jQuery(this).val() },
+									dataType: "json"
+															
+							}, function(datas){	
+
+								datas = $.parseJSON(datas);
+
+								console.log(datas);
+
+								removed_guest_from_table = "<div id='draggable-" + which_guest_id + "' class='guests-group draggable returned'>";
+								removed_guest_from_table+= datas.guest_name;
+								removed_guest_from_table+= "<div num_guests='1' class='num-guests'></div>";
+								removed_guest_from_table+= "<div group_array='" + which_guest_id + "' class='group-array'></div>";
+								removed_guest_from_table+= "</div>";
+
+								jQuery(".guests-box").append(removed_guest_from_table);
+
+								set_draggable();
+
+								seats_taken_display = "<div class='table-id' table-id='" + datas.table_id + "'></div>";
+								seats_taken_display+= "<div class='seats-taken' seats-taken='" + datas.table_count + "'></div>";
+								seats_taken_display+= "<style>#table-" + which_table_num + " .table-visual img{ display: none; } #table-" + which_table_num + " .table-visual img:nth-child(" + (datas.table_count + 1) + "){ display: block; }</style>";
+
+								console.log(seats_taken_display);
+								
+								jQuery("#table-" + which_table_num + " .table-data").html(seats_taken_display);
+
+								if(datas.table_pre_count == datas.table_max_seats){
+									//jQuery('#table-' + which_table_num ).droppable("enable");
+								}		
+
+								//location.reload();
+								
+																
+							}							
+
+
+						);
+
+					});
+
 				});
+
+				function set_draggable(){
+
+					jQuery( ".draggable" ).draggable({
+						revert: "invalid",
+						drag: function(event, ui){
+							which_guest_group = jQuery(this).attr('id');
+						}
+			        });
+
+				}
 
 			</script>
 
@@ -666,3 +807,34 @@ function addGuests(){
 
 }
 add_action('wp_ajax_addGuestsToTable', 'addGuests');
+
+
+function removeGuest(){
+		
+	$guest_id = (int)$_POST['data']['guest_id'];
+	$table_id = (int)get_post_meta($guest_id, 'assigned_table', true);
+	$table_pre_count = (int)get_post_meta($table_id, 'seats_taken', true);
+	$table_count = $table_pre_count - 1;
+	$max_seats = (int)get_post_meta($table_id, 'max_seats', true);
+
+	update_post_meta($table_id, 'seats_taken', $table_count);
+
+	update_post_meta($guest_id, 'assigned_table', 0);
+	update_post_meta($guest_id, 'separated_from_group_of_guests', 1);
+	//delete_post_meta($guest_id, 'with_main_guest');
+
+	$guest_data = array(
+        "guest_name" => get_the_title($guest_id),
+        "guest_former_table" => $table_id,
+        "table_count" => $table_count,
+        "table_pre_count" => $table_pre_count,
+        "table_max_seats" => $max_seats,
+        "table_id" => $table_id,
+    );		
+
+	echo json_encode($guest_data);	
+
+	die();
+
+}
+add_action('wp_ajax_removeGuestFromTable', 'removeGuest');
