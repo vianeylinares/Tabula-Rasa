@@ -292,7 +292,9 @@ function tabula_rasa_seats_assignment_shortcode(){
 
 										<div id="draggable-<?php echo $count_draggs; ?>" class="guests-group draggable">
 
-											<input type="checkbox" value="<?php echo get_the_ID(); ?>" checked /> <b><?php echo get_the_title(); ?></b><br/>
+											<div>
+												<input type="checkbox" value="<?php echo get_the_ID(); ?>" checked /> <b><?php echo get_the_title(); ?></b>
+											</div>
 
 											<?php
 
@@ -317,16 +319,17 @@ function tabula_rasa_seats_assignment_shortcode(){
 														if( get_post_meta(get_the_ID(), 'assigned_table', true) == 0 && get_post_meta(get_the_ID(), 'separated_from_group_of_guests', true) == 0){
 
 															?>
-
-																<input type="checkbox" value="<?php echo get_the_ID(); ?>" checked /> <?php echo get_the_title() ?><br/>
+																<div>
+																	<input type="checkbox" value="<?php echo get_the_ID(); ?>" checked /> <?php echo get_the_title() ?>
+																</div>
 
 															<?php
 
 															$count_guest++;
 
-														}
+															$user_group_array.= "," . strval(get_the_ID());
 
-														$user_group_array.= "," . strval(get_the_ID());											
+														}
 
 													endwhile;				
 
@@ -381,15 +384,19 @@ function tabula_rasa_seats_assignment_shortcode(){
 
 										<div id="draggable-<?php echo $count_draggs; ?>" class="guests-group draggable">
 
-											<input type="checkbox" value="<?php echo get_the_ID(); ?>" checked /> 
+											<div>
 
-											<?php
+												<input type="checkbox" value="<?php echo get_the_ID(); ?>" checked />
 
-												echo ( get_post_meta(get_the_ID(), 'status', true) == 1 )? "<b>" : "" ;
-												echo get_the_title();
-												echo ( get_post_meta(get_the_ID(), 'status', true) == 1 )? "</b>" : "" ;
+												<?php
 
-											?>
+													echo ( get_post_meta(get_the_ID(), 'status', true) == 1 )? " <b>" : "" ;
+													echo get_the_title();
+													echo ( get_post_meta(get_the_ID(), 'status', true) == 1 )? "</b>" : "" ;
+
+												?>
+
+											</div>
 
 											<div num_guests="<?php echo $count_guest; ?>" class='num-guests'></div>
 
@@ -705,6 +712,52 @@ function tabula_rasa_seats_assignment_js(){
 
 					});
 
+					jQuery(".guests-group input[type=checkbox]").click(function(){
+
+						which_guest_id = jQuery(this).val();
+						which_guest_group = jQuery(this).parent().parent().attr('id');
+
+						jQuery(this).parent().remove();
+
+						new_num_guests = parseInt(jQuery("#" + which_guest_group + " .num-guests").attr("num_guests")) - 1;
+
+						jQuery("#" + which_guest_group + " .num-guests").attr("num_guests", new_num_guests);
+
+						group_array = jQuery("#" + which_guest_group + " .group-array").attr("group_array");
+						new_group_array = group_array.replace(which_guest_id,'');
+						new_group_array = new_group_array.replace(',,',',');
+
+						jQuery("#" + which_guest_group + " .group-array").attr("group_array", new_group_array);
+
+						jQuery.post(
+
+							home_url + '/wp-admin/admin-ajax.php', {
+
+								action: 'removeGuestFromGroup',
+
+									data: { guest_id: jQuery(this).val() },
+									dataType: "json"
+
+							}, function(datas){
+
+								datas = $.parseJSON(datas);
+
+								removed_guest_from_table = "<div id='draggable-" + which_guest_id + "' class='guests-group draggable returned'>";
+								removed_guest_from_table+= datas.guest_name;
+								removed_guest_from_table+= "<div num_guests='1' class='num-guests'></div>";
+								removed_guest_from_table+= "<div group_array='" + which_guest_id + "' class='group-array'></div>";
+								removed_guest_from_table+= "</div>";
+
+								jQuery(".guests-box").append(removed_guest_from_table);
+
+								set_draggable();
+
+							}
+
+						);
+
+					});
+
 				});
 
 				function set_draggable(){
@@ -838,3 +891,21 @@ function removeGuest(){
 
 }
 add_action('wp_ajax_removeGuestFromTable', 'removeGuest');
+
+
+function removeGuestFromGroup(){
+
+	$guest_id = (int)$_POST['data']['guest_id'];
+
+	update_post_meta($guest_id, 'separated_from_group_of_guests', 1);
+
+	$guest_data = array(
+        "guest_name" => get_the_title($guest_id),
+    );
+
+	echo json_encode($guest_data);
+
+	die();
+
+}
+add_action('wp_ajax_removeGuestFromGroup', 'removeGuestFromGroup');
