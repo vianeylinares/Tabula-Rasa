@@ -46,7 +46,7 @@ jQuery(document).ready(function($){
 						jQuery("#"+ which_table + " .table-data").html(seats_taken_display);
 
 						if(datas.seats_total == datas.max_seats){
-							jQuery('#table-' + which_table_num ).droppable("disable");
+							//jQuery('#table-' + which_table_num ).droppable("disable");
 						}
 
 						new_seats_display = "";
