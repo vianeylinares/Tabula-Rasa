@@ -144,7 +144,9 @@ function tabula_rasa_seats_assignment_shortcode(){
 																?>
 
 																	<div class='guester guest-id_<?php echo get_the_ID(); ?>'>
-																		<input type='checkbox' value='<?php echo get_the_ID(); ?>' checked /> <?php echo get_the_title(); ?>
+																		<input type='checkbox' value='<?php echo get_the_ID(); ?>' checked /> 
+																		<?php echo (get_post_meta(get_the_ID(), 'status', true))? "<b>" : "" ; ?><?php echo get_the_title(); ?>
+																		<?php echo (get_post_meta(get_the_ID(), 'status', true))? "</b>" : "" ; ?>
 																	</div>
 
 																<?php

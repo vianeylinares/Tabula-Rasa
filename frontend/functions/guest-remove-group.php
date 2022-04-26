@@ -11,8 +11,12 @@ function removeGuestFromGroup(){
 
 	update_post_meta($guest_id, 'separated_from_group_of_guests', 1);
 
+	$guest_name = (get_post_meta($guest_id, 'status', true))? '<b>' : '';
+	$guest_name .= get_the_title($guest_id);
+	$guest_name .= (get_post_meta($guest_id, 'status', true))? '</b>' : '';
+
 	$guest_data = array(
-        "guest_name" => get_the_title($guest_id),
+        "guest_name" => $guest_name,
     );
 
 	echo json_encode($guest_data);

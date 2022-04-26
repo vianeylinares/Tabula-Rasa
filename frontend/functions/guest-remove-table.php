@@ -19,8 +19,12 @@ function removeGuest(){
 	update_post_meta($guest_id, 'separated_from_group_of_guests', 1);
 	//delete_post_meta($guest_id, 'with_main_guest');
 
+	$guest_name = (get_post_meta($guest_id, 'status', true))? '<b>' : '';
+	$guest_name .= get_the_title($guest_id);
+	$guest_name .= (get_post_meta($guest_id, 'status', true))? '</b>' : '';
+
 	$guest_data = array(
-        "guest_name" => get_the_title($guest_id),
+        "guest_name" => $guest_name,
         "guest_former_table" => $table_id,
         "table_count" => $table_count,
         "table_pre_count" => $table_pre_count,

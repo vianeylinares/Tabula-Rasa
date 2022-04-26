@@ -38,10 +38,14 @@ function addGuests(){
 
 		$query = new WP_Query($args);
 
+		/*$first_guest_name = (get_post_meta($main_guest, 'status', true))? '<b>' : '';
+		$first_guest_name .= get_the_title($main_guest);
+		$first_guest_name .= (get_post_meta($main_guest, 'status', true))? '</b>' : '';
+
 		$seats_taken_display_additionals = array(
-			"guest_1" => get_the_title($main_guest),
+			"guest_1" => $first_guest_name,
 			"guest_1_ID" => $main_guest
-		);
+		);*/
 
 		if ( $query->have_posts() ) :
 
@@ -51,7 +55,11 @@ function addGuests(){
 
 				update_post_meta(get_the_ID(), 'assigned_table', $table_id);
 
-				$seats_taken_display_additionals["guest_" . $seats_counter] = get_the_title(get_the_ID());
+				$guest_name = (get_post_meta(get_the_ID(), 'status', true))? '<b>' : '';
+				$guest_name .= get_the_title(get_the_ID());
+				$guest_name .= (get_post_meta(get_the_ID(), 'status', true))? '</b>' : '';
+
+				$seats_taken_display_additionals["guest_" . $seats_counter] = $guest_name;
 				$seats_taken_display_additionals["guest_" . $seats_counter . "_ID"] = get_the_ID();
 
 				$seats_counter++;

@@ -26,11 +26,11 @@ function tabularasa_admin_css_and_js(){
     wp_enqueue_script( 'jquery-ui-draggable' );
 
     /* Table creation JS */
-    wp_register_script( 'table-creation-js', plugin_dir_url( __FILE__ ) . '../admin/js/table-creation.js', array('jquery'), '1', true );
+    wp_register_script( 'table-creation-js', plugin_dir_url( __FILE__ ) . '../admin/functions/table-creation.js', array('jquery'), '1', true );
     wp_enqueue_script( 'table-creation-js' );
 
     /* Table setup JS */
-    wp_register_script( 'table-setup-js', plugin_dir_url( __FILE__ ) . '../admin/js/table-setup.js', array('jquery'), '1', true );
+    wp_register_script( 'table-setup-js', plugin_dir_url( __FILE__ ) . '../admin/functions/table-setup.js', array('jquery'), '1', true );
     wp_enqueue_script( 'table-setup-js' );
 
 }
