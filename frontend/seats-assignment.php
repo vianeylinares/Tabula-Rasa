@@ -221,6 +221,7 @@ function tabula_rasa_seats_assignment_shortcode(){
 								update_post_meta($main_guest_id, 'assigned_table', 0);
 								update_post_meta($main_guest_id, 'status', 1);
 								update_post_meta($main_guest_id, 'separated_from_group_of_guests', 0);
+								update_post_meta($main_guest_id, 'arrived', 0);
 
 
 							    if($all_fields['companions_field'] != ""){
@@ -246,6 +247,7 @@ function tabula_rasa_seats_assignment_shortcode(){
 										    update_post_meta($companion_id, 'assigned_table', 0);
 										    update_post_meta($companion_id, 'status', 0);
 										    update_post_meta($companion_id, 'separated_from_group_of_guests', 0);
+										    update_post_meta($companion_id, 'arrived', 0);
 
 										}
 
