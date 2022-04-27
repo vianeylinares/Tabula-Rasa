@@ -303,6 +303,10 @@ button.mfp-close{
     font-size: 20px;
 }
 
+.arrived{
+    text-decoration: line-through;
+}
+
 @media(max-width: 767px){
 
     .table-box{ width: calc(100% - 20px); }

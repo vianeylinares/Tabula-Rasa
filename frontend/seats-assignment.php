@@ -488,7 +488,12 @@ function tabula_rasa_table_view_shortcode(){
                                 			
                                 			    ?>
                                 
-                                				    <div class="table-list"><input type="checkbox" value="<?php echo get_the_ID(); ?>" > <span><?php echo get_the_title(); ?></span></div>
+                                				    <div id="user-<?php echo get_the_ID(); ?>" class="table-list">
+                                				        <input type="checkbox" value="<?php echo get_the_ID(); ?>" <?php echo (get_post_meta(get_the_ID(), 'arrived', true))? "checked" : "" ; ?> > 
+                                				        <span <?php echo (get_post_meta(get_the_ID(), 'arrived', true))? "class='arrived'" : "" ; ?>>
+                                				            <?php echo get_the_title(); ?>
+                                				        </span>
+                                				    </div>
                                 				    
                                 				<?php
                                 
@@ -556,6 +561,66 @@ function tabula_rasa_seats_assignment_js(){
 					home_url = "<?php echo home_url(); ?>";
 
 					set_draggable();
+					
+					jQuery(".table-list input").click(function(){
+					    
+					   guest = jQuery(this).parent().attr('id');
+					   
+					   guest_id = guest.substr(guest.indexOf('-') + 1);
+					   
+					   console.log(guest_id);
+					   
+					   if(jQuery(this).is(":checked")){
+					    
+    					    jQuery.post(
+    
+                    			home_url + '/wp-admin/admin-ajax.php', {
+                    
+                    				action: 'arrivedGuest',
+                    
+                    					data: { guest_id: guest_id },
+                    					dataType: "json"
+                    
+                    			}, function(datas){
+                    
+                    				datas = $.parseJSON(datas);
+                    				
+                    				console.log(datas);
+            					    
+            					    jQuery("#" + guest + " span").addClass("arrived");
+            					    
+                    			}
+                    
+                    		);
+                    		
+					    }
+					    
+					    if(!jQuery(this).is(":checked")){
+					    
+    					    jQuery.post(
+    
+                    			home_url + '/wp-admin/admin-ajax.php', {
+                    
+                    				action: 'leftGuest',
+                    
+                    					data: { guest_id: guest_id },
+                    					dataType: "json"
+                    
+                    			}, function(datas){
+                    
+                    				datas = $.parseJSON(datas);
+                    				
+                    				console.log(datas);
+                    
+            					    jQuery("#" + guest + " span").removeClass("arrived");
+                    
+                    			}
+                    
+                    		);
+                    		
+					    }
+					    
+					});
 
 				});
 
@@ -567,3 +632,39 @@ function tabula_rasa_seats_assignment_js(){
 
 }
 add_action( 'wp_footer', 'tabula_rasa_seats_assignment_js', 999 );
+
+
+function arrivedGuestRegister(){
+
+	$guest_id = (int)$_POST['data']['guest_id'];
+
+	update_post_meta($guest_id, 'arrived', 1);
+
+	$guest_data = array(
+        "guest_id" => $guest_id,
+    );
+
+	echo json_encode($guest_data);
+
+	die();
+
+}
+add_action('wp_ajax_arrivedGuest', 'arrivedGuestRegister');
+
+
+function leftGuestRegister(){
+
+	$guest_id = (int)$_POST['data']['guest_id'];
+
+	update_post_meta($guest_id, 'arrived', 0);
+
+	$guest_data = array(
+        "guest_id" => $guest_id,
+    );
+
+	echo json_encode($guest_data);
+
+	die();
+
+}
+add_action('wp_ajax_leftGuest', 'leftGuestRegister');
