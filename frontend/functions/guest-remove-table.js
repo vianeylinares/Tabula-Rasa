@@ -31,13 +31,29 @@ jQuery('body').on( 'click', '.guester input[type=checkbox]', function($) {
 
 			console.log(datas);
 
-			removed_guest_from_table = "<div id='draggable-" + which_guest_id + "' class='guests-group draggable returned'>";
-			removed_guest_from_table+= datas.guest_name;
-			removed_guest_from_table+= "<div num_guests='1' class='num-guests'></div>";
-			removed_guest_from_table+= "<div group_array='" + which_guest_id + "' class='group-array'></div>";
-			removed_guest_from_table+= "</div>";
+			if(jQuery("#draggable-" + which_guest_id).length == 0) {
 
-			jQuery(".guests-box").append(removed_guest_from_table);
+                removed_guest_from_table = "<div id='draggable-" + which_guest_id + "' class='guests-group draggable returned'>";
+                removed_guest_from_table+= datas.guest_name;
+                removed_guest_from_table+= "<div num_guests='1' class='num-guests'></div>";
+                removed_guest_from_table+= "<div group_array='" + which_guest_id + "' class='group-array'></div>";
+                removed_guest_from_table+= "</div>";
+
+			    jQuery(".guests-box").append(removed_guest_from_table);
+
+			} else {
+
+			    jQuery("#draggable-" + which_guest_id).css({
+					"display": "block",
+					"top": "auto",
+					"left": "auto",
+					"width": "100%",
+					"height": "auto"
+				});
+
+				jQuery("#draggable-" + which_guest_id).draggable({revert:"invalid"});
+
+			}
 
 			set_draggable();
 
