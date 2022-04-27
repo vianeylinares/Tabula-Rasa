@@ -433,11 +433,119 @@ function tabula_rasa_seats_assignment_shortcode(){
 add_shortcode( 'seats_assignment', 'tabula_rasa_seats_assignment_shortcode' );
 
 
+function tabula_rasa_table_view_shortcode(){
+
+	ob_start();
+
+	if ( is_user_logged_in() ) {
+
+		?>
+
+			<div class="assignment-wrapper clearfix">
+			    
+			    <?php
+
+					$args_table = array(
+							'post_type' => 'table',
+							'order' => 'ASC',
+							'posts_per_page' => '-1'
+						);
+
+					$query_table = new WP_Query($args_table);
+
+					if ( $query_table->have_posts() ) :
+
+						while($query_table -> have_posts()) : $query_table -> the_post();
+						
+						    ?>
+						    
+    						    <div class="table-box">
+    
+        							<div class="table-title">Table #<?php echo get_post_meta(get_the_ID(), 'table_num', true); ?></div>
+        							<div style="text-align: center; margin-bottom: 30px;">
+        							    <b>Shape:</b> <?php echo get_post_meta(get_the_ID(), 'shape', true); ?> - 
+        							    <b>Seats taken:</b> <?php echo get_post_meta(get_the_ID(), 'seats_taken', true); ?> - 
+        							    <b>Max seats:</b> <?php echo get_post_meta(get_the_ID(), 'max_seats', true); ?>
+        							</div>
+        					        
+        					        <?php
+        							
+            							$table_id = get_the_ID();
+            							
+            							$args = array(
+                                			'post_type' => 'guest',
+                                			'order' => 'ASC',
+                                			'posts_per_page' => '-1',
+                                			'meta_key' => 'assigned_table',
+                                			'meta_value' => $table_id
+                                		);
+                                
+                                		$query = new WP_Query($args);
+                                		
+                                		if ( $query->have_posts() ) :
+            
+                                			while($query -> have_posts()) : $query -> the_post();
+                                			
+                                			    ?>
+                                
+                                				    <div class="table-list"><input type="checkbox" value="<?php echo get_the_ID(); ?>" > <span><?php echo get_the_title(); ?></span></div>
+                                				    
+                                				<?php
+                                
+                                			endwhile;
+                                
+                                		endif; wp_reset_postdata();
+                                		
+                                	?>
+                        		
+                        		</div>
+                        		
+                    		<?php
+
+						endwhile; wp_reset_postdata();
+
+					endif;
+
+				?>
+			    
+			</div>
+
+		<?php
+
+	} else {
+
+		$args = array(
+			'echo' => true,
+			'redirect' => '',
+			'form_id' => 'seat-loginform',
+			'label_username' => __('Username'),
+			'label_password' => __('Password'),
+			'label_remember' => __('Remember Me'),
+			'label_log_in' => __('Log In'),
+			'id_username' => 'user_login',
+			'id_password' => 'user_pass',
+			'id_remember' => 'rememberme',
+			'id_submit' => 'wp-submit',
+			'remember' => true,
+			'value_username' => NULL,
+			'value_remember' => true,
+		);
+
+	    wp_login_form($args);
+
+	}
+
+	return ob_get_clean();
+
+}
+add_shortcode( 'table_view', 'tabula_rasa_table_view_shortcode' );
+
+
 function tabula_rasa_seats_assignment_js(){
 
 	global $post;
 
-	if(has_shortcode( $post->post_content, 'seats_assignment' )){
+	if(has_shortcode( $post->post_content, 'seats_assignment' ) || has_shortcode( $post->post_content, 'table_view' )){
 
 		?>
 
