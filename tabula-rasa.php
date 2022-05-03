@@ -19,7 +19,15 @@ include( plugin_dir_path( __FILE__ ) . 'admin/post-types/post-types-metaboxes.ph
 include( plugin_dir_path( __FILE__ ) . 'admin/functions/table-creation.php' );
 include( plugin_dir_path( __FILE__ ) . 'admin/functions/table-setup.php' );
 include( plugin_dir_path( __FILE__ ) . 'admin/admin-setup.php' );
+include( plugin_dir_path( __FILE__ ) . 'frontend/tr-enqueue.php' );
+include( plugin_dir_path( __FILE__ ) . 'frontend/functions/tr-login-form.php' );
+include( plugin_dir_path( __FILE__ ) . 'frontend/functions/tables-display.php' );
+include( plugin_dir_path( __FILE__ ) . 'frontend/functions/guests-display.php' );
+include( plugin_dir_path( __FILE__ ) . 'frontend/functions/guests-from-ninja-forms.php' );
 include( plugin_dir_path( __FILE__ ) . 'frontend/functions/guests-add-table.php' );
 include( plugin_dir_path( __FILE__ ) . 'frontend/functions/guest-remove-table.php' );
 include( plugin_dir_path( __FILE__ ) . 'frontend/functions/guest-remove-group.php' );
-include( plugin_dir_path( __FILE__ ) . 'frontend/seats-assignment.php' );
+include( plugin_dir_path( __FILE__ ) . 'frontend/functions/arrived-guest-register.php' );
+include( plugin_dir_path( __FILE__ ) . 'frontend/seats-assignment-view.php' );
+include( plugin_dir_path( __FILE__ ) . 'frontend/guest-table-view.php' );
+include( plugin_dir_path( __FILE__ ) . 'frontend/guest-group-view.php' );
