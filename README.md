@@ -15,7 +15,7 @@ The plugin adds three custom post-types: table, venue, and guest.
 
 This custom post-type handles the table data. The tables required are created on the ‘Tabula Rasa’ settings page.
 
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/Pb0HAGCwD7U/0.jpg)](http://www.youtube.com/watch?v=Pb0HAGCwD7U "Tabula Rasa - Table creation")
+[![IMAGE ALT TEXT](https://vl-portfolio-images.s3.us-west-2.amazonaws.com/tabula-rasa-table-creation.jpg)](http://www.youtube.com/watch?v=Pb0HAGCwD7U "Tabula Rasa - Table creation")
 
 #### ‘venue’
 
@@ -36,7 +36,7 @@ The venue space will be displayed with the tables. The tables will be placed at 
 
 The guest lists will be dragged and dropped into the tables. The guests can be separated from the list or the assigned table.
 
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/lP3jG5DGufc/0.jpg)](http://www.youtube.com/watch?v=lP3jG5DGufc "Tabula Rasa - Guests table assign")
+[![IMAGE ALT TEXT](https://vl-portfolio-images.s3.us-west-2.amazonaws.com/tabula-rasa-seat-assignment-frontend.jpg)](http://www.youtube.com/watch?v=lP3jG5DGufc "Tabula Rasa - Guests table assign")
 
 
 ### Other details
