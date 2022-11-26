@@ -14,8 +14,10 @@ if(!defined('ABSPATH')){
        exit;
 }
 
-include( plugin_dir_path( __FILE__ ) . 'admin/post-types/post-types.php' );
-include( plugin_dir_path( __FILE__ ) . 'admin/post-types/post-types-metaboxes.php' );
+
+include( plugin_dir_path( __FILE__ ) . 'admin/post-types/table.php' );
+include( plugin_dir_path( __FILE__ ) . 'admin/post-types/guest.php' );
+include( plugin_dir_path( __FILE__ ) . 'admin/post-types/venue.php' );
 include( plugin_dir_path( __FILE__ ) . 'admin/functions/table-creation.php' );
 include( plugin_dir_path( __FILE__ ) . 'admin/functions/table-setup.php' );
 include( plugin_dir_path( __FILE__ ) . 'admin/admin-setup.php' );

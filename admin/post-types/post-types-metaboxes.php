@@ -6,7 +6,7 @@ if(!defined('ABSPATH')){
 }
 
 
-function tabula_rasa_table_metabox(){
+/*function tabula_rasa_table_metabox(){
 
     add_meta_box(
 
@@ -18,10 +18,10 @@ function tabula_rasa_table_metabox(){
     );
 
 }
-add_action('add_meta_boxes', 'tabula_rasa_table_metabox');
+add_action('add_meta_boxes', 'tabula_rasa_table_metabox');*/
 
 
-function tabula_rasa_table_callback($post){
+/*function tabula_rasa_table_callback($post){
 
     $table_id = ( isset($_GET['post']) )? $_GET['post'] : 0 ;
 
@@ -32,10 +32,10 @@ function tabula_rasa_table_callback($post){
     echo "Table number: " . get_post_meta($table_id, 'table_num', true); echo "<br/>";
     echo "Shape: " . get_post_meta($table_id, 'shape', true);
         
-}
+}*/
 
 
-function tabula_rasa_guest_metabox(){
+/*function tabula_rasa_guest_metabox(){
 
     add_meta_box(
 
@@ -58,4 +58,4 @@ function tabula_rasa_guest_callback($post){
     echo "Assigned table: " . get_post_meta($guest_id, 'assigned_table', true); echo "<br/>";
     echo "Separated from group of guests: " . get_post_meta($guest_id, 'separated_from_group_of_guests', true);
         
-}
+}*/
